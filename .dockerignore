@@ -1,0 +1,12 @@
+.git
+.agents
+.codex
+node_modules
+.env
+.env.production
+*.zip
+README.md
+HOSTINGER_DEPLOYMENT.md
+schema.sql
+hostinger-schema.sql
+npm-debug.log*
