@@ -5,11 +5,22 @@ CREATE TABLE IF NOT EXISTS users (
   id CHAR(36) PRIMARY KEY,
   name VARCHAR(120) NOT NULL,
   email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NULL,
   currency CHAR(3) NOT NULL DEFAULT 'GBP',
   monthly_budget DECIMAL(14,2) NOT NULL DEFAULT 2500.00,
   color CHAR(7) NOT NULL DEFAULT '#1d654f',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CHECK (monthly_budget >= 0)
+);
+
+CREATE TABLE IF NOT EXISTS sessions (
+  id CHAR(36) PRIMARY KEY,
+  user_id CHAR(36) NOT NULL,
+  token_hash CHAR(64) NOT NULL UNIQUE,
+  expires_at DATETIME NOT NULL,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_sessions_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  INDEX idx_sessions_token_expiry (token_hash, expires_at)
 );
 
 CREATE TABLE IF NOT EXISTS expenses (

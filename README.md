@@ -19,6 +19,14 @@ npm install
 npm start
 ```
 
+## Authentication
+
+Every household member signs in with their own email and password. Set a long,
+private `REGISTRATION_CODE` in the environment before starting the app. New
+accounts—and existing profiles being claimed for the first time—must provide
+that code. Apply `auth-migration.sql` before deploying this version over an
+existing database.
+
 Open `http://localhost:3000`.
 
 ## Features

@@ -23,12 +23,24 @@ nano .env.production
 ```
 
 Set the real domain and your existing MySQL server's host, port, database,
-username, and password. Never commit or share `.env.production`.
+username, password, and a long random `REGISTRATION_CODE`. Household members
+need this private code only when creating or claiming an account. Never commit
+or share `.env.production`.
 
 Your MySQL server must allow connections from the VPS public IP. If MySQL runs
 directly on the same VPS host rather than inside this Compose network, use the
 host's reachable private/public IP or `host.docker.internal` when supported;
 `localhost` inside the app container points to the container itself.
+
+For an existing Daybook database, apply the authentication migration once:
+
+```bash
+mysql -h "$DB_HOST" -u "$DB_USER" -p "$DB_NAME" < auth-migration.sql
+```
+
+Existing profiles keep their expenses. On the registration screen, use the
+same email address plus the private registration code to claim the profile and
+set its first password.
 
 ## 4. Start the stack
 
