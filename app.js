@@ -30,7 +30,7 @@ const money=(amount,currency=user().currency)=>currency==='GEL'
 const userExpenses=()=>state.expenses.filter(e=>e.userId===user().id).sort((a,b)=>b.date.localeCompare(a.date));
 const monthExpenses=()=>userExpenses().filter(e=>e.date.slice(0,7)===iso(today).slice(0,7));
 const total=xs=>xs.reduce((s,e)=>s+convert(e.amount,e.currency,user().currency),0);
-const currencyMoney=(amount,currency)=>new Intl.NumberFormat(undefined,{style:'currency',currency,maximumFractionDigits:currency==='JPY'?0:2}).format(amount);
+const currencyMoney=(amount,currency)=>{const value=Number(amount),symbol=currencies[currency]?.symbol||currency,digits=currency==='JPY'?0:2,formatted=new Intl.NumberFormat('en-GB',{minimumFractionDigits:digits,maximumFractionDigits:digits}).format(Math.abs(value));return`${value<0?'−':''}${symbol}${formatted}`};
 const balances=()=>Object.keys(currencies).map(currency=>({currency,income:state.income.filter(x=>x.currency===currency).reduce((s,x)=>s+Number(x.amount),0),spent:state.expenses.filter(x=>x.currency===currency).reduce((s,x)=>s+Number(x.amount),0)})).map(x=>({...x,balance:x.income-x.spent})).filter(x=>x.income||x.spent);
 const ledgerRows=()=>state.ledger.filter(x=>(x.description+' '+(x.note||'')+' '+x.currency+' '+x.type).toLowerCase().includes(txSearch.toLowerCase()));
 const escape=s=>String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
