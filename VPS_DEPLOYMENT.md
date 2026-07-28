@@ -42,6 +42,16 @@ Existing profiles keep their expenses. On the registration screen, use the
 same email address plus the private registration code to claim the profile and
 set its first password.
 
+To enable multi-currency income, rolling balances, and monthly spending limits
+on an existing database, apply the finance migration once:
+
+```bash
+mysql -h "$DB_HOST" -u "$DB_USER" -p "$DB_NAME" < finance-migration.sql
+```
+
+The migration records each legacy monthly budget as an opening balance and is
+safe to rerun because every migrated opening balance has a unique migration key.
+
 ## 4. Start the stack
 
 ```bash

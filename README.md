@@ -27,6 +27,17 @@ accounts—and existing profiles being claimed for the first time—must provide
 that code. Apply `auth-migration.sql` before deploying this version over an
 existing database.
 
+## Multi-currency ledger
+
+Income and expenses are stored in their original currencies. Balances roll
+forward indefinitely and are calculated separately for each currency; amounts
+are never combined through an exchange rate. Optional monthly spending limits
+are also maintained per currency.
+
+Before deploying this feature over an existing database, apply
+`finance-migration.sql` once. It converts each user's legacy monthly budget
+into an opening-balance income transaction without duplicating it on reruns.
+
 Open `http://localhost:3000`.
 
 ## Features
